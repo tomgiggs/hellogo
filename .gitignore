@@ -1,0 +1,7 @@
+.idea/
+.history/*
+test/
+*.exe
+*.log
+
+
