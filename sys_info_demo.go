@@ -1,12 +1,32 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"runtime"
 	"time"
 )
 
-func main() {
+var a = flag.String("a", "", "全部使用")
+var b = flag.Bool("b", false, "bool类型参数")
+var s = flag.String("s", "", "string类型参数")
+var t = flag.String("t","ok","ssssss")
+
+
+
+func mainb() {
+	//解析命令行参数方式1：
+	// for idx, args := range os.Args {
+	// 	fmt.Println("参数"+strconv.Itoa(idx)+":", args)
+	// }
+	//解析命令行参数方式2：
+    flag.Parse()
+
+	fmt.Println("-a", *a)
+	fmt.Println("-b:", *b)
+	fmt.Println("-s:", *s)
+	fmt.Println("其他参数：", flag.Args())
+
 	fmt.Println(runtime.GOOS)
 	fmt.Println(time.Now())
 	// var timestamp int64
