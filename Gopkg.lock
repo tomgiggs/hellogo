@@ -20,6 +20,14 @@
   version = "v1.9.2"
 
 [[projects]]
+  digest = "1:bd8bc15ce3a9929e2777651cbc271fca5561c0d5f42187edb4720e638d24662d"
+  name = "github.com/beevik/etree"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "8aee6516be3b1163bb6450c35c50e4969e3a3aa8"
+  version = "v1.1.0"
+
+[[projects]]
   digest = "1:ad9bac31f001ab730600bf9e80c4da7552cb9cb47c505f3fa0fe80de81682bbe"
   name = "github.com/confluentinc/confluent-kafka-go"
   packages = ["kafka"]
@@ -107,6 +115,7 @@
   analyzer-version = 1
   input-imports = [
     "github.com/astaxie/beego",
+    "github.com/beevik/etree",
     "github.com/confluentinc/confluent-kafka-go/kafka",
     "github.com/garyburd/redigo/redis",
     "github.com/go-sql-driver/mysql",
