@@ -8,7 +8,7 @@ import (
 )
 
 func main(){
-	var url string = "https://blog.csdn.net/qqqqll3/article/details/85054126"
+	var url = "https://blog.csdn.net/qqqqll3/article/details/85054126"
 	resp,err :=http.Get(url)
 	if err!=nil{
 		panic(err) //XML syntax error on line 122: unquoted or missing attribute value in element

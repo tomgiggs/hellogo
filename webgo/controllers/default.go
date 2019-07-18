@@ -16,6 +16,52 @@ type MainController struct {
 type UserController struct {
 	beego.Controller
 }
+type TeacherController struct {
+	beego.Controller
+}
+type LearnerController struct {//首字母需要大写，不然导不出
+	beego.Controller
+}
+
+type LoginController struct {
+	beego.Controller
+}
+type RegisterController struct {
+	beego.Controller
+}
+type LogoutController struct {
+	beego.Controller
+}
+type OrderController struct {
+	beego.Controller
+}
+type PromotionController struct {
+	beego.Controller
+}
+type CouponController struct {
+	beego.Controller
+}
+type SkillController struct {
+	beego.Controller
+}
+type SearchController struct {
+	beego.Controller
+}
+type ReviewController struct {
+	beego.Controller
+}
+type RankController struct {
+	beego.Controller
+}
+type LocationController struct {
+	beego.Controller
+}
+type ChatController struct {
+	beego.Controller
+}
+//type Controller struct {
+//	beego.Controller
+//}
 
 func (c *MainController) Get() {
 	c.Data["Website"] = "beego.me"
@@ -52,5 +98,60 @@ func (c *UserController) Get(){
 
 	c.Ctx.WriteString("hello, this is  user center，you are the %s: user"+usernum) //好像没法想Python那样使用%来生成字符串
 }
+
+func (c *LearnerController) Get(){
+	fmt.Println(c.GetString(""))
+}
+
+func (c *TeacherController) Get(){
+
+}
+//func (c *Controller) Get(){
+//
+//}
+func (c *LoginController) Get(){
+
+}
+func (c *RegisterController) Get(){
+
+}
+func (c *LogoutController) Get(){
+
+}
+
+func (c *OrderController) Get(){
+
+}
+
+func (c *PromotionController) Get(){
+
+}
+
+func (c *CouponController) Get(){
+
+}
+
+func (c *SearchController) Get(){
+
+}
+
+func (c *SkillController) Get(){
+
+}
+
+func (c *ReviewController) Get(){
+
+}
+
+func (c *RankController) Get(){
+
+}
+
+func (c *LocationController) Get(){
+
+}
+
+
+
 
 
