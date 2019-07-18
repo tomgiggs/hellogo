@@ -1,4 +1,5 @@
 这是一个golang的学习工程，非常粗糙简陋
+之前学过一些go的编程，最近看了无闻老师的一些视频，加快了go入门的速度，在此表示感谢，资源GitHub地址：https://github.com/Unknwon/go-fundamental-programming
 包依赖之前使用godep管理，现在用govendor管理，刚入门挺乱的
 #基本使用笔记
 gopkg.lock和gopkg.toml是godep生成的用来管理依赖，而vendor/vendor.json是govendor生成的，好像两个包管理器都公用vendor文件夹，而且都可以把第三方包放在vendor文件夹底下管理
@@ -9,4 +10,7 @@ golang 不用new来创建对象，直接使用structName{}这样的形式就行
 golang 的map不像其他语言一样可以存value不同的键值对，map声明的时候就确定了只能存什么样的值，如果想要存像json那样的数据就需要自定义一个结构体，然后使用结构体来存，结构体里面的键名需要以大写字母开头才能顺利转json，如果需要指定转换后的json键名需要额外指定
 golang中没有类这个概念，struct是与类最接近的数据结构，golang使用interface来实现对数据结构声明与传承
 make和new的区别：make 只能为 slice、map或 channel 类型分配内存并初始化，同时返回一个有初始值的 slice、map 或 channel 类型引用，不是指针。内建函数 new 用来分配内存，它的第一个参数是一个类型，不是一个值，它的返回值是一个指向新分配类型零值的指针。
+golang中数组长度是数组类型的一部分，也就是两个长度不同的string数组是无法比较的，但是如果两个string数组长度是一样的话就可以进行比较
+
+
 

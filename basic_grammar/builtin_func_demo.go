@@ -95,8 +95,6 @@ func Basic(){
 	array[0] = 10
 	fmt.Println(array)
 
-
-
 }
 
 
