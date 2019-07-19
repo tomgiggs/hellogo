@@ -2,7 +2,6 @@ package basic_grammar
 
 import (
 	"database/sql"
-	"encoding/json"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -24,23 +23,27 @@ func OpenDB() (success bool, db *sql.DB) {
 	return isOpen, db
 }
 
-func QueryFromDB(db *sql.DB) {
-	rows, err := db.Query("SELECT * FROM d_user_limit")
-	// CheckErr(err)
+func QueryFromDB(db *sql.DB)interface{} {
+	rows, err := db.Query("SELECT * FROM user_info")
 	if err != nil {
 		fmt.Println("error:", err)
-	} else {
+		return nil
 	}
+	//var userDatas = make([]interface{},20,20)
+	userDatas := []interface{}{}
 	for rows.Next() {
-		var uid string
-		var works_limits string
-		var release_wait_time string
-		// CheckErr(err)
-		err = rows.Scan(&uid, &works_limits, &release_wait_time)
-		fmt.Println(uid)
-		fmt.Println(works_limits)
-		fmt.Println(release_wait_time)
+		var user = UserInfo{}
+		var id = 0
+		err = rows.Scan(&id,&user.Name, &user.Age, &user.Location,&user.Job)
+		//fmt.Println(user)
+		//userData,_:= json.Marshal(user)
+		//fmt.Println(string(userData))
+		userDatas = append(userDatas,user)
 	}
+	//userDataJson,_:= json.Marshal(userDatas)
+	//fmt.Println(string(userDataJson))
+	return userDatas
+
 }
 
 type Server struct {
@@ -48,9 +51,6 @@ type Server struct {
 	ServerIP   string
 }
 
-type Serverslice struct {
-	Servers []Server
-}
 
 func GetDBData() {
 	opend, db := OpenDB()
@@ -59,12 +59,5 @@ func GetDBData() {
 	} else {
 		fmt.Println("open faile:")
 	}
-	var s Serverslice
-	str := `{"servers":[{"serverName":"Shanghai_VPN","serverIP":"127.0.0.1"},
-            {"serverName":"Beijing_VPN","serverIP":"127.0.0.2"}]}`
-
-	json.Unmarshal([]byte(str), &s)
-
 	QueryFromDB(db)
-	fmt.Println(s)
 }

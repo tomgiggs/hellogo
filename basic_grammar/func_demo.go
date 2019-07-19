@@ -50,7 +50,7 @@ func lazyFunc(a,b,c int) int{//参数类型是相同的时候就可以省去每�
 }
 func lazyFunc2(a,b,c int,d,e,f string, unknow ...string) (int,string){//参数类型是相同的时候就可以省去每个参数都声明类型
 
-	return a+b+c, d+" "+e+" "+f+" "+stringJoin(" ",unknow)
+	return a+b+c, d+" "+e+" "+f+" "+StringJoin(" ",unknow)
 }
 func veryLazyFunc(a,b,c int) (sum,min,max int){//可以这里声明返回值的变量名称，这样就可以更加清楚的知道返回值是什么意思了，如果是直接使用int,int,int会不容易知道返回值是什么
 	return a+b+c,Max(a,b,c),Min(a,b,c)
@@ -73,7 +73,7 @@ func Min(args...int) int{
 	}
 	return min
 }
-func stringJoin(sep string,words []string) string{
+func StringJoin(sep string,words []string) string{
 	var str = ""
 	for _,word:=range words{
 		str+=word+sep

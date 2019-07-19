@@ -26,7 +26,6 @@ func GetSysInfo() {
 	fmt.Println("-b:", *b)
 	fmt.Println("-s:", *s)
 	fmt.Println("其他参数：", flag.Args())
-
 	fmt.Println(runtime.GOOS)
 	fmt.Println(time.Now())
     fmt.Println(runtime.NumCPU())

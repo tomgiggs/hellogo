@@ -94,7 +94,18 @@ func Basic(){
 	fmt.Println(array)
 	array[0] = 10
 	fmt.Println(array)
+	//全部一次性读取
+	//var body  []byte
+	//body,_ = ioutil.ReadAll(f)
+	//fmt.Println(string(body[:])) //byte转字符串
 
+	//str = "this is a string demo"-------------------
+	var str string
+	str = "这是一个中文字符串"
+	var data []byte = []byte(str)
+	fmt.Println(data)
+	print(len(data))
+	print(string(data[:])) //这个输出会有点不一样，虚线后面的代码先执行了，printlnbody的代码夹在输出结果中间
 }
 
 

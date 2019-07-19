@@ -1,4 +1,4 @@
-package main //如果包名是spider的话就会报错：GoLand runnerw.exe: CreateProcess failed with error 216
+package basic_grammar //如果包名是spider的话就会报错：GoLand runnerw.exe: CreateProcess failed with error 216
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func main(){
+func GetHtml(){
 	var url = "https://blog.csdn.net/qqqqll3/article/details/85054126"
 	resp,err :=http.Get(url)
 	if err!=nil{
