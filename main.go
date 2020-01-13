@@ -33,7 +33,8 @@ func main(){
 	//basic_grammar.OrmDemo2()
 	//basic_grammar.BeegoDemo()
 	//basic_grammar.StartHttpServer()
-	basic_grammar.WebSocketDemo()
+	//basic_grammar.WebSocketDemo()
+	basic_grammar.GroupConsume02()
 	//basic_grammar.MultiRoutine()
 
 
