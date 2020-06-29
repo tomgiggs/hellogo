@@ -1,8 +1,10 @@
 package main
 
-import "hellogo/basic_grammar"
+import (
+	"hellogo/middleware"
+)
 
-func main(){
+func main() {
 	//运行报错： use of internal package github.com/go-redis/redis/internal/hashtag not allowed，这个是因为src文件夹底下有多个重名文件夹
 	//basic_grammar.GetSysInfo()
 	//basic_grammar.ArrayDemo()
@@ -34,10 +36,21 @@ func main(){
 	//basic_grammar.BeegoDemo()
 	//basic_grammar.StartHttpServer()
 	//basic_grammar.WebSocketDemo()
-	basic_grammar.GroupConsume02()
+	// basic_grammar.GroupConsume02()
 	//basic_grammar.MultiRoutine()
+	//basic_grammar.GlogDemo()
+	//basic_grammar.ConstDemo()
+	//basic_grammar.SliceDemo07()
+	//basic_grammar.Update()
+	//basic_grammar.Xxxxxxxx()
+	//basic_grammar.Container01()
+	//basic_grammar.RegDemo01()
+	//basic_grammar.WriteFileDemo()
+	//basic_grammar.TypeConvert()
+	//middleware.StartGrpcClient()
+	middleware.StartGrpcServer()
 
-
+	//basic_grammar.SwitchDemo01()
+	//basic_grammar.TimerDemo()
+	//basic_grammar.TickerDemo()
 }
-
-

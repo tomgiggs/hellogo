@@ -1,4 +1,4 @@
-package basic_grammar
+package middleware
 /*
 从这个项目复制过来的：https://github.com/eranyanay/1m-go-websockets
 主要用于学习，感谢作者

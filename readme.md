@@ -37,4 +37,8 @@ golang中数组长度是数组类型的一部分，也就是两个长度不同�
 Go语言实现一个接口并不需要显示声明，而是只要你实现了接口中的所有方法就认为你实现了这个接口。这称之为Duck typing
 使用go funName()创建一个新的协程可以参考创建一个新的线程，创建完就继续执行后面的语句了并不会导致阻塞。
 
+#go grpc使用
+编译生成.pb.go文件命令：
+protoc --proto_path=./proto --plugin=protoc-gen-go.exe --go_out=proto/ --go_opt=paths=source_relative proto/hellogrpc.proto
+
 
