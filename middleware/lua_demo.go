@@ -3,9 +3,12 @@ package middleware
 import (
 	"fmt"
 	"github.com/yuin/gopher-lua"
+	//"github.com/layeh/gopher-luar"
+	"layeh.com/gopher-luar"
 	"log"
 	//"github.com/fwhezfwhez/errorx"
 )
+
 
 func LuaDemo() {
 	ls := lua.NewState()
@@ -34,5 +37,23 @@ func LuaDemo() {
 	res, ok := ret.(lua.LNumber)
 	if ok {
 		fmt.Println("get res from lua:", res)
+	}
+}
+
+type LuaZygote struct{
+	ls       *lua.LState
+}
+
+func(lz *LuaZygote) Add(a,b int) int{
+	fmt.Println("add func called,result is: ",a+b)
+	return a+b
+}
+
+func LuaDemo02(){
+	lz := new(LuaZygote)
+	lz.ls = lua.NewState()
+	lz.ls.SetGlobal("Add", luar.New(lz.ls, lz.Add))// 将方法暴露给lua脚本调用
+	if err := lz.ls.DoString(`print(Add(2,3))`); err != nil {
+		fmt.Println("run lua code error: ",err.Error())
 	}
 }

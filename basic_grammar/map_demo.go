@@ -103,3 +103,9 @@ func MapDemo() {
 	json.Unmarshal(json_str, revealed)
 	fmt.Println(revealed.Age)
 }
+
+func MapNil(){
+	map01 := make(map[string]string)
+	map01["001"] = "200"
+	fmt.Println(reflect.TypeOf(map01["003"]))
+}

@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/golang/glog"
+	"github.com/jeanphorn/log4go"
 	"strconv"
 )
 
@@ -13,6 +14,7 @@ import (
 func GlogDemo() {
 	flag.Parse()
 	//glog.MaxSize=100000
+
 	defer glog.Flush()
 
 	glog.Info("hello this is write by glog")
@@ -58,4 +60,12 @@ func TypeConvert() {
 	//		fmt.Println("sdwsedw")
 	//	}
 
+}
+
+func Log4goDemo01(){
+	defer func() {
+		log4go.Close()
+	}()
+	log4go.LoadConfiguration("./middleware/log4go.json")
+	log4go.LOGGER("Test").Info("this is a output demo")
 }

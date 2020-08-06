@@ -1,10 +1,16 @@
 package main
 
 import (
+	"fmt"
 	"hellogo/middleware"
 )
 
 func main() {
+	defer func() {
+		if err := recover();err!= nil{
+			fmt.Println("panic info: ", err)
+		}
+	}()
 	//运行报错： use of internal package github.com/go-redis/redis/internal/hashtag not allowed，这个是因为src文件夹底下有多个重名文件夹
 	//basic_grammar.GetSysInfo()
 	//basic_grammar.ArrayDemo()
@@ -48,7 +54,21 @@ func main() {
 	//basic_grammar.WriteFileDemo()
 	//basic_grammar.TypeConvert()
 	//middleware.StartGrpcClient()
-	middleware.StartGrpcServer()
+
+	go func() {
+		//middleware.LinkStart()
+		middleware.LinkClientStart()
+
+	}()
+	middleware.LinkStart()
+	//middleware.LinkClientStart()
+	//middleware.GenObj()
+	//middleware.StartGrpcServer()
+	//basic_grammar.MapNil()
+	//middleware.CalDigest()
+	//middleware.Log4goDemo01()
+	//middleware.LuaDemo02()
+	//basic_grammar.ReflectDemo02()
 
 	//basic_grammar.SwitchDemo01()
 	//basic_grammar.TimerDemo()

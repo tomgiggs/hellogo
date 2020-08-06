@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	address = "127.0.0.1:8999"
+	address = "127.0.0.1:18999"
 )
 
 func StartGrpcClient() {
@@ -23,7 +23,7 @@ func StartGrpcClient() {
 
 	c := pb.NewGreeterClient(conn)
 
-	name := "lin"
+	name := "yilion"
 	if len(os.Args) > 1 {
 		name = os.Args[1]
 	}
