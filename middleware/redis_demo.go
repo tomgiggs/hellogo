@@ -54,3 +54,32 @@ func RedigoDemo(){
 		fmt.Printf("Get mykey: %s \n", info)
 	}
 }
+
+func RedisSubDemo(){
+	client := goredis.NewClient(&goredis.Options{
+		Addr:     "localhost:6379",
+		Password: "root",
+		DB:       0,
+	})
+	sub := client.Subscribe("gim-user-login-server")
+	defer sub.Close()
+
+	 for msg := range sub.Channel(){
+		fmt.Println(msg.Payload)
+	}
+
+}
+func RedisMapDemo(){
+	client := goredis.NewClient(&goredis.Options{
+		Addr:     "localhost:6379",
+		Password: "root",
+		DB:       0,
+	})
+	servermap := client.HGetAll("gim-user-login-server:111")
+	fmt.Println(servermap.Result())
+
+	//for v,msg := range servermap{
+	//	fmt.Println(msg,v)
+	//}
+
+}

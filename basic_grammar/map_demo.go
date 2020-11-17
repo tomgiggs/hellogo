@@ -109,3 +109,15 @@ func MapNil(){
 	map01["001"] = "200"
 	fmt.Println(reflect.TypeOf(map01["003"]))
 }
+
+//type Set map[string]interface{}
+
+//type Set map[string]struct{} //如果不先命名变量就会出现编译错误
+type AA struct {}
+type Set map[string]AA
+
+func SetDemo(){
+	s := make(Set,0)
+	s["11"] = AA{}
+
+}

@@ -55,12 +55,32 @@ func main() {
 	//basic_grammar.TypeConvert()
 	//middleware.StartGrpcClient()
 
-	go func() {
-		//middleware.LinkStart()
-		middleware.LinkClientStart()
+	//go func() {
+	//	//middleware.LinkStart()
+	//	middleware.LinkClientStart()
+	//
+	//}()
+	//middleware.LinkStart()
+	//middleware.ContextStart()
+	//fmt.Println(3|1)
+	//mapAgainstId:= make(map[int32][]int32, 0)
+	//mapAgainstId :=map[int32][]int32{}
+	//
+	//if againstId, ok := mapAgainstId[0]; ok {
+	//	fmt.Println(againstId)
+	////}
+	//a := make([]int,5,10)
+	//a=nil
+	//fmt.Println(len(a))
+	//middleware.GuiDemo01()
+	//fmt.Println(3<<10|711)
+	//middleware.CassandraDemo()
+	//fmt.Println(3791-3072)
 
-	}()
-	middleware.LinkStart()
+	//basic_grammar.GetLocalIp()
+	middleware.RedisMapDemo()
+
+
 	//middleware.LinkClientStart()
 	//middleware.GenObj()
 	//middleware.StartGrpcServer()

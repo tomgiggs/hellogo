@@ -1,0 +1,8 @@
+
+region="shanghai"
+[access]
+    port = 8686
+
+[consul]
+    node = ["127.0.0.1:8080"]
+

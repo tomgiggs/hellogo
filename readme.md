@@ -20,6 +20,15 @@ gopkg.lock和gopkg.toml是godep生成的用来管理依赖
 golang.org 中x目录可以从https://github.com/golang下载再导入进去
 有些时候github访问特别缓慢或者是在Google仓库里面的，就到码云（gitee.com）上搜相同的仓库名称，一般情况下用的人多的仓库会在gitee上也有。
 
+## go mod
+go mod是官方支持的功能，使用起来很方便，
+go init 初始化项目依赖管理
+go mod tidy 自动下载依赖
+go mod vendor 将依赖打包到项目下vendor目录
+启用gomod：
+export GO111MODULE=on
+配置代理加快代码拉取：
+export GOPROXY=https://goproxy.cn
 
 # 语法
 golang的包导入方式是导入包名，然后就可以使用packageName.funcName使用包下面的函数了，这一个跟其他语言有点区别，其他语言是导入文件，然后使用FileName.funcName调用，这样说来就是在同一个包底下不能有相同的公开函数
@@ -40,5 +49,27 @@ Go语言实现一个接口并不需要显示声明，而是只要你实现了接
 #go grpc使用
 编译生成.pb.go文件命令：
 protoc --proto_path=./proto --plugin=protoc-gen-go.exe --go_out=proto/ --go_opt=paths=source_relative proto/hellogrpc.proto
+生成grpc服务代码：
+protoc --go_out=. --go_opt=paths=source_relative  --go-grpc_out=. --go-grpc_opt=paths=source_relative  service.proto
 
+
+使用 go mod添加依赖只需要在项目下执行go get xxx就可以自动添加修改go.mod文件
+egg: go get github.com/lxn/walk
+
+#go gui样例
+使用go walk制作gui，walk是直接封装的Windows-gui接口
+打包需要一个manifest文件
+代码写好后，我们直接go build打包是不行的，golang的图形exe需要依赖于manifest才能正常运行。
+而go却没有提供资源打包的所有功能，所以要把manifest嵌入exe文件中，还需要一个工具：rsrc。
+go get github.com/akavel/rsrc
+rsrc -manifest test.manifest -o rsrc.syso
+go build -ldflags="-H windowsgui"
+参考链接：
+https://www.cnblogs.com/sbman/p/9366530.html 
+https://github.com/lxn/walk
+
+---------
+
+标准项目目录结构：
+https://github.com/golang-standards/project-layout
 
