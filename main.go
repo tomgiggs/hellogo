@@ -78,9 +78,17 @@ func main() {
 	//fmt.Println(3791-3072)
 
 	//basic_grammar.GetLocalIp()
-	middleware.RedisMapDemo()
+	//middleware.RedisMapDemo()
+	//runes := []rune("rune22 test 001")
+	//fmt.Println(runes[1:5])
+	//fmt.Println(strings.Count("goood",""))
 
-
+	//middleware.RedisPubDemo()
+	//fmt.Println(strconv.Itoa(1))
+	//fmt.Println(strconv.FormatInt(int64(200),10))
+	//middleware.ServiceDiscover()
+	//uuid.New()
+	middleware.OrmDemo3()
 	//middleware.LinkClientStart()
 	//middleware.GenObj()
 	//middleware.StartGrpcServer()

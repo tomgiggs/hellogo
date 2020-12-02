@@ -11,13 +11,13 @@ import (
 func ServiceDiscover() {
 	var lastIndex uint64
 	config := api.DefaultConfig()
-	config.Address = "172.26.43.219:8500"
+	config.Address = "172.25.161.35:8500"
 	client, err := api.NewClient(config)
 	if err != nil {
 		fmt.Println("api new client is failed, err:", err)
 		return
 	}
-	services, metainfo, err := client.Health().Service("go-consul-redis01", "", true, &api.QueryOptions{
+	services, metainfo, err := client.Health().Service("nonsence-conn-server", "", true, &api.QueryOptions{
 		WaitIndex: lastIndex, // 同步点，这个调用将一直阻塞，直到有新的更新
 	})
 	if err != nil {

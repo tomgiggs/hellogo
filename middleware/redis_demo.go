@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"encoding/json"
 	"fmt"
 	redigo "github.com/garyburd/redigo/redis"
 	goredis "github.com/go-redis/redis"
@@ -55,6 +56,12 @@ func RedigoDemo(){
 	}
 }
 
+type UserChangeInfo struct {
+	event string
+	uid  int64
+	srvId string
+}
+
 func RedisSubDemo(){
 	client := goredis.NewClient(&goredis.Options{
 		Addr:     "localhost:6379",
@@ -64,11 +71,36 @@ func RedisSubDemo(){
 	sub := client.Subscribe("gim-user-login-server")
 	defer sub.Close()
 
-	 for msg := range sub.Channel(){
+	for msg := range sub.Channel(){
 		fmt.Println(msg.Payload)
 	}
 
+
+
 }
+func RedisPubDemo(){
+	client := goredis.NewClient(&goredis.Options{
+		Addr:     "localhost:6379",
+		Password: "root",
+		DB:       0,
+	})
+
+	data := &UserChangeInfo{
+		event: "online",
+		uid:   2,
+		srvId: "111",
+	}
+	jsonStr,_ := json.Marshal(data)
+
+	err := client.Publish("gim-user-login-server",string(jsonStr)).Err()
+	if err != nil {
+		fmt.Println("发布失败",err)
+	}
+
+}
+
+
+
 func RedisMapDemo(){
 	client := goredis.NewClient(&goredis.Options{
 		Addr:     "localhost:6379",

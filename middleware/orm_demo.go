@@ -6,8 +6,9 @@ gorm文档地址：http://gorm.book.jasperxu.com/models.html#md
 */
 
 import (
-	// _ "github.com/go-sql-driver/mysql"
+	"fmt"
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 type UserModel struct {
@@ -16,6 +17,15 @@ type UserModel struct {
 	Age      int    `json:"age"`
 	Location string `json:"location"`
 	Job      string `json:"job"`
+}
+
+type UserSeq struct {
+	ID int64
+	//gorm.Model//不需要gorm默认的字段
+	AppId      int64
+	UserId     int64
+	ReadSeq    int64
+	ReceiveSeq int64
 }
 
 //type DUserLimit struct { //表名是下划线风格怎么办？？？
@@ -38,7 +48,7 @@ type UserModel struct {
 //func OrmDemo2()  {
 //	db, err := gorm.Open("mysql", "root:123@tcp(127.0.0.1:3306)/test?charset=utf8mb4")
 //	gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) string  {
-//		return defaultTableName[:len(defaultTableName)-1];
+//		return defaultTableName[:len(defaultTableName)-1]
 //	}
 //	if err != nil {
 //		panic(err)
@@ -50,9 +60,29 @@ type UserModel struct {
 //	id:=0
 //	row.Scan(&id,&user.Name,&user.Age,&user.Location,&user.Job)
 //	fmt.Println(user)
-//
 //	//result := db.First(&UserInfo{Name:"gorm",Age:25,Location:"fujian-china"})
-//
-//
 //}
+func OrmDemo3()  {
+	db, err := gorm.Open("mysql", "root:123@tcp(127.0.0.1:3306)/nonsence?charset=utf8mb4")
+	if err != nil {
+		fmt.Println("open db error:",err)
+		return
+	}
+	defer db.Close()
+	db.SingularTable(true)// 全局禁用表名复数
+	//更改默认表名
+	//gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) string  {
+	//	return "prefix_" + defaultTableName;
+	//}
+	us := &UserSeq{
+		AppId: 3,
+		UserId: 3,
+		ReadSeq: 1,
+		ReceiveSeq: 5,
+	}
+	result := db.Create(us)
+	result.Commit()
+	fmt.Println("insert result:",us.ID)
+
+}
 //

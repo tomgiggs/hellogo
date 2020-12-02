@@ -15,7 +15,9 @@
 package beego
 
 import (
+	"crypto/tls"
 	"fmt"
+	"net/http"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -55,6 +57,9 @@ type Listen struct {
 	EnableHTTP        bool
 	HTTPAddr          string
 	HTTPPort          int
+	AutoTLS           bool
+	Domains           []string
+	TLSCacheDir       string
 	EnableHTTPS       bool
 	EnableMutualHTTPS bool
 	HTTPSAddr         string
@@ -62,6 +67,7 @@ type Listen struct {
 	HTTPSCertFile     string
 	HTTPSKeyFile      string
 	TrustCaFile       string
+	ClientAuth        tls.ClientAuthType
 	EnableAdmin       bool
 	AdminAddr         string
 	AdminPort         int
@@ -78,6 +84,8 @@ type WebConfig struct {
 	DirectoryIndex         bool
 	StaticDir              map[string]string
 	StaticExtensionsToGzip []string
+	StaticCacheFileSize    int
+	StaticCacheFileNum     int
 	TemplateLeft           string
 	TemplateRight          string
 	ViewsPath              string
@@ -98,14 +106,16 @@ type SessionConfig struct {
 	SessionAutoSetCookie         bool
 	SessionDomain                string
 	SessionDisableHTTPOnly       bool // used to allow for cross domain cookies/javascript cookies.
-	SessionEnableSidInHTTPHeader bool //	enable store/get the sessionId into/from http headers
+	SessionEnableSidInHTTPHeader bool // enable store/get the sessionId into/from http headers
 	SessionNameInHTTPHeader      string
-	SessionEnableSidInURLQuery   bool //	enable get the sessionId from Url Query params
+	SessionEnableSidInURLQuery   bool // enable get the sessionId from Url Query params
+	SessionCookieSameSite        http.SameSite
 }
 
 // LogConfig holds Log related config
 type LogConfig struct {
 	AccessLogs       bool
+	EnableStaticLogs bool   //log static files requests default: false
 	AccessLogsFormat string //access log format: JSON_FORMAT, APACHE_FORMAT or empty string
 	FileLineNum      bool
 	Outputs          map[string]string // Store Adaptor : config
@@ -125,6 +135,8 @@ var (
 	appConfigPath string
 	// appConfigProvider is the provider for the config, default is ini
 	appConfigProvider = "ini"
+	// WorkPath is the absolute path to project root directory
+	WorkPath string
 )
 
 func init() {
@@ -133,15 +145,18 @@ func init() {
 	if AppPath, err = filepath.Abs(filepath.Dir(os.Args[0])); err != nil {
 		panic(err)
 	}
-	workPath, err := os.Getwd()
+	WorkPath, err = os.Getwd()
 	if err != nil {
 		panic(err)
 	}
 	var filename = "app.conf"
-	if os.Getenv("BEEGO_MODE") != "" {
-		filename = os.Getenv("BEEGO_MODE") + ".app.conf"
+	if os.Getenv("BEEGO_RUNMODE") != "" {
+		filename = os.Getenv("BEEGO_RUNMODE") + ".app.conf"
 	}
-	appConfigPath = filepath.Join(workPath, "conf", filename)
+	appConfigPath = filepath.Join(WorkPath, "conf", filename)
+	if configPath := os.Getenv("BEEGO_CONFIG_PATH"); configPath != "" {
+		appConfigPath = configPath
+	}
 	if !utils.FileExists(appConfigPath) {
 		appConfigPath = filepath.Join(AppPath, "conf", filename)
 		if !utils.FileExists(appConfigPath) {
@@ -182,13 +197,18 @@ func recoverPanic(ctx *context.Context) {
 		if BConfig.RunMode == DEV && BConfig.EnableErrorsRender {
 			showErr(err, ctx, stack)
 		}
+		if ctx.Output.Status != 0 {
+			ctx.ResponseWriter.WriteHeader(ctx.Output.Status)
+		} else {
+			ctx.ResponseWriter.WriteHeader(500)
+		}
 	}
 }
 
 func newBConfig() *Config {
 	return &Config{
 		AppName:             "beego",
-		RunMode:             DEV,
+		RunMode:             PROD,
 		RouterCaseSensitive: true,
 		ServerName:          "beegoServer:" + VERSION,
 		RecoverPanic:        true,
@@ -203,6 +223,9 @@ func newBConfig() *Config {
 			ServerTimeOut: 0,
 			ListenTCP4:    false,
 			EnableHTTP:    true,
+			AutoTLS:       false,
+			Domains:       []string{},
+			TLSCacheDir:   ".",
 			HTTPAddr:      "",
 			HTTPPort:      8080,
 			EnableHTTPS:   false,
@@ -215,6 +238,7 @@ func newBConfig() *Config {
 			AdminPort:     8088,
 			EnableFcgi:    false,
 			EnableStdIo:   false,
+			ClientAuth:    tls.RequireAndVerifyClientCert,
 		},
 		WebConfig: WebConfig{
 			AutoRender:             true,
@@ -224,6 +248,8 @@ func newBConfig() *Config {
 			DirectoryIndex:         false,
 			StaticDir:              map[string]string{"/static": "static"},
 			StaticExtensionsToGzip: []string{".css", ".js"},
+			StaticCacheFileSize:    1024 * 100,
+			StaticCacheFileNum:     1000,
 			TemplateLeft:           "{{",
 			TemplateRight:          "}}",
 			ViewsPath:              "views",
@@ -240,13 +266,15 @@ func newBConfig() *Config {
 				SessionCookieLifeTime:        0, //set cookie default is the browser life
 				SessionAutoSetCookie:         true,
 				SessionDomain:                "",
-				SessionEnableSidInHTTPHeader: false, //	enable store/get the sessionId into/from http headers
+				SessionEnableSidInHTTPHeader: false, // enable store/get the sessionId into/from http headers
 				SessionNameInHTTPHeader:      "Beegosessionid",
-				SessionEnableSidInURLQuery:   false, //	enable get the sessionId from Url Query params
+				SessionEnableSidInURLQuery:   false, // enable get the sessionId from Url Query params
+				SessionCookieSameSite:        http.SameSiteDefaultMode,
 			},
 		},
 		Log: LogConfig{
 			AccessLogs:       false,
+			EnableStaticLogs: false,
 			AccessLogsFormat: "APACHE_FORMAT",
 			FileLineNum:      true,
 			Outputs:          map[string]string{"console": ""},
@@ -302,6 +330,14 @@ func assignConfig(ac config.Configer) error {
 		if len(fileExts) > 0 {
 			BConfig.WebConfig.StaticExtensionsToGzip = fileExts
 		}
+	}
+
+	if sfs, err := ac.Int("StaticCacheFileSize"); err == nil {
+		BConfig.WebConfig.StaticCacheFileSize = sfs
+	}
+
+	if sfn, err := ac.Int("StaticCacheFileNum"); err == nil {
+		BConfig.WebConfig.StaticCacheFileNum = sfn
 	}
 
 	if lo := ac.String("LogOutputs"); lo != "" {
@@ -395,9 +431,9 @@ func newAppConfig(appConfigProvider, appConfigPath string) (*beegoAppConfig, err
 
 func (b *beegoAppConfig) Set(key, val string) error {
 	if err := b.innerConfig.Set(BConfig.RunMode+"::"+key, val); err != nil {
-		return err
+		return b.innerConfig.Set(key, val)
 	}
-	return b.innerConfig.Set(key, val)
+	return nil
 }
 
 func (b *beegoAppConfig) String(key string) string {
