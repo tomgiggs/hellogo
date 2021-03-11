@@ -149,3 +149,62 @@ func Test002(a int) (int, error) {
 	//bb.Error()
 	return a, nil
 }
+
+func calc(index string, a, b int) int {
+	ret := a + b
+	fmt.Println(index, a, b, ret)
+	return ret
+}
+
+func DeferDemo03(){
+	a := 1
+	b := 2
+	defer calc("1", a, calc("10", a, b))
+	a = 0
+	defer calc("2", a, calc("20", a, b))
+	b = 1
+	fmt.Println("=================")
+}
+type People struct{}
+
+func (p *People) ShowA() {
+	fmt.Println("showA")
+	p.ShowB()
+}
+func (p *People) ShowB() {
+	fmt.Println("showB")
+}
+
+type Teacher struct {
+	People
+}
+
+func (t *Teacher) ShowB() {
+	fmt.Println("teacher showB")
+}
+func OverWriteDemo01(){
+	t :=Teacher{}
+	t.ShowA()
+	t.ShowB()
+	//----
+	//showA
+	//showB
+	//teacher showB
+}
+type student struct {
+	Name string
+	Age  int
+}
+func StudentLoop01() {
+	m := make(map[string]*student)
+	stus := []student{
+		{Name: "zhou", Age: 24},
+		{Name: "li", Age: 23},
+		{Name: "wang", Age: 22},
+	}
+	for i, stu := range stus {
+		m[stu.Name] = &stus[i]
+		//fmt.Printf("%p\n",stu)
+	}
+	fmt.Printf("%v",m)
+}

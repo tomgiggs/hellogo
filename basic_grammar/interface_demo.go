@@ -116,3 +116,20 @@ func DataAssemble(index int,dbData interface{}){//改成这样就报错
 func Idemo(aa int,bb *interface{}){//interface前面加*号，怎么调用都是失败的Cannot use 'b' (type *int) as type *interface{}
 	fmt.Println("goooooood")
 }
+
+type Filter interface {
+	ConstructPBFilter() (int, error)
+}
+
+type SingleColumnValueFilter struct {
+
+}
+func (f *SingleColumnValueFilter) ConstructPBFilter()(int, error){
+	return 0,nil
+}
+//判断接口是否实现
+func IsInterfaceValid(){
+	var _ Filter = (*SingleColumnValueFilter)(nil)//new是编译的时候检查，这样写是运行的时候检查
+	var _ Filter = new(SingleColumnValueFilter)
+	var _ Filter = &SingleColumnValueFilter{}
+}

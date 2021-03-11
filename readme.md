@@ -73,3 +73,4 @@ https://github.com/lxn/walk
 标准项目目录结构：
 https://github.com/golang-standards/project-layout
 
+使用go install可以生成.a文件，并安装到gopath/pkg/windows_amd64/proj_name/pkg_name/xxx.a，结果是以包名命名的，不是一个文件一个.a文件

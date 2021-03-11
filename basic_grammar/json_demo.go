@@ -1,9 +1,11 @@
 package basic_grammar
 
 import (
+	"encoding/json"
 	"fmt"
 	"path"
 	"path/filepath"
+	"reflect"
 	"strings"
 )
 import "github.com/bitly/go-simplejson"
@@ -89,4 +91,12 @@ func Camel2underscore(name string) string {
 	}
 	fmt.Println(newStr)
 	return newStr
+}
+func jsonType(){
+	//-------
+	jsonStr:=[]byte(`{"age":2.0}`)
+	var value map[string]interface{}
+	json.Unmarshal(jsonStr,&value)
+	age:=value["age"]
+	fmt.Println(reflect.TypeOf(age))//float64而不是int64或者其他
 }
