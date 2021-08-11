@@ -1,4 +1,4 @@
-//go:binary-only-package
+// ------ //go:binary-only-package
 package basic_grammar
 
 

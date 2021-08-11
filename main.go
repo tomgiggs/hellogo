@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"hellogo/basic_grammar"
+	"hellogo/third_party"
+	"io"
 	_ "net/http/pprof"
 )
 
@@ -31,7 +33,30 @@ import (
 //	//}
 //	return stu
 //}
+type fake struct { io.Writer }
 
+//func (f *fake)Write(ss []byte) (n int, err error)  {
+//	fmt.Println(ss)
+//	return
+//}
+
+func fred (logger io.Writer) {//函数入参是一个指向入参地址的指针，指向的地址是传进来的地址
+	fmt.Println("==?,%v,%p,%p",logger==nil,logger,logger,logger.(fake))
+	//fmt.Println("==?,%v,%p,%p",logger==nil,logger,logger,logger.(fake))//  interface conversion: io.Writer is *main.fake, not main.fake
+	if logger != nil {//对于指针对象的方法来说，就算指针的值为nil也是可以调用的
+		logger.Write([]byte("..."))
+	}
+}
+func NilError()  {
+	var lp fake
+	//var lp fake = fake{}
+	//fred(nil)
+	fred(lp)
+}
+
+type NilTes struct {
+
+}
 func main() {
 	defer func() {
 		if err := recover();err!= nil{
@@ -39,6 +64,13 @@ func main() {
 		}
 	}()
 
+
+	//var pp *NilTes
+	//fmt.Println(pp)
+	//NilError()
+	//third_party.StartGrpcJson()
+	third_party.ValuateDemo()
+	return
 	//用于配合gops进行性能查看统计
 	//if err2 := agent.Listen(agent.Options{
 	//	Addr:"0.0.0.0:9981",

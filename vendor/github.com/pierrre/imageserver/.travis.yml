@@ -1,0 +1,18 @@
+dist: trusty
+language: go
+go:
+  - 1.12.x
+  - tip
+
+services:
+  - memcached
+  - redis-server
+
+addons:
+  apt:
+    packages:
+      - graphicsmagick
+
+install: true
+
+script: make build test lint
