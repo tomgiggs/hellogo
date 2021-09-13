@@ -1,15 +1,17 @@
 package middleware
 
 import (
+	"fmt"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	pb "hellogo/middleware/proto"
 	"log"
 	"os"
+	//"os"
 )
 
 const (
-	address = "127.0.0.1:18999"
+	address = "127.0.0.1:21999"
 )
 
 func StartGrpcClient() {
@@ -21,18 +23,39 @@ func StartGrpcClient() {
 
 	defer conn.Close()
 
-	c := pb.NewGreeterClient(conn)
+	//c := pb.NewGreeterClient(conn)
+	//
+	//name := "yilion"
+	//if len(os.Args) > 1 {
+	//	name = os.Args[1]
+	//}
+	//
+	//r, err := c.SayHello(context.Background(), &pb.HelloRequest{Name: name})
+	//if err != nil {
+	//	log.Fatalf("could not greet: %v", err)
+	//}
+	//log.Println(r.Message)
 
-	name := "yilion"
-	if len(os.Args) > 1 {
-		name = os.Args[1]
-	}
+	c2 := pb.NewFileSaverClient(conn)
 
-	r, err := c.SayHello(context.Background(), &pb.HelloRequest{Name: name})
-
+	stream, err := c2.Save(context.Background())
 	if err != nil {
-		log.Fatalf("could not greet: %v", err)
+		fmt.Errorf("create stream failed:%v", err)
+		return
+	}
+	defer stream.CloseSend()
+	fin, err := os.ReadFile("./fd22f99815f740aba778eea680ed6c4b.jpeg")
+	if err != nil {
+		fmt.Errorf("send msg error:%v", err)
+		return
 	}
 
-	log.Println(r.Message)
+	err = stream.Send(&pb.SaveFileRequest{
+		Name: "demo.jpeg",
+		Data: fin,
+	})
+	if err != nil {
+		fmt.Errorf("send msg error:%v", err)
+		return
+	}
 }

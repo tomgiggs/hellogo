@@ -21,7 +21,8 @@ func ServiceDiscover() {
 		WaitIndex: lastIndex, // 同步点，这个调用将一直阻塞，直到有新的更新
 	})
 	if err != nil {
-		logrus.Warn("error retrieving instances from Consul: %v", err)
+
+		logrus.Warnf("error retrieving instances from Consul: %v", err)
 	}
 	lastIndex = metainfo.LastIndex
 

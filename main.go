@@ -3,9 +3,10 @@ package main
 import (
 	"fmt"
 	"hellogo/basic_grammar"
-	"hellogo/third_party"
+	"hellogo/middleware"
 	"io"
 	_ "net/http/pprof"
+	"sync"
 )
 
 //str := ""//包内必须以var const import func type  const, func,开头,短变量用来声明和初始化函数内部的局部变量
@@ -33,21 +34,21 @@ import (
 //	//}
 //	return stu
 //}
-type fake struct { io.Writer }
+type fake struct{ io.Writer }
 
 //func (f *fake)Write(ss []byte) (n int, err error)  {
 //	fmt.Println(ss)
 //	return
 //}
 
-func fred (logger io.Writer) {//函数入参是一个指向入参地址的指针，指向的地址是传进来的地址
-	fmt.Println("==?,%v,%p,%p",logger==nil,logger,logger,logger.(fake))
+func fred(logger io.Writer) { //函数入参是一个指向入参地址的指针，指向的地址是传进来的地址
+	fmt.Println("==?,%v,%p,%p", logger == nil, logger, logger, logger.(fake))
 	//fmt.Println("==?,%v,%p,%p",logger==nil,logger,logger,logger.(fake))//  interface conversion: io.Writer is *main.fake, not main.fake
-	if logger != nil {//对于指针对象的方法来说，就算指针的值为nil也是可以调用的
+	if logger != nil { //对于指针对象的方法来说，就算指针的值为nil也是可以调用的
 		logger.Write([]byte("..."))
 	}
 }
-func NilError()  {
+func NilError() {
 	var lp fake
 	//var lp fake = fake{}
 	//fred(nil)
@@ -55,21 +56,34 @@ func NilError()  {
 }
 
 type NilTes struct {
-
 }
+
 func main() {
 	defer func() {
-		if err := recover();err!= nil{
+		if err := recover(); err != nil {
 			fmt.Println("panic info: ", err)
 		}
 	}()
-
 
 	//var pp *NilTes
 	//fmt.Println(pp)
 	//NilError()
 	//third_party.StartGrpcJson()
-	third_party.ValuateDemo()
+	//middleware.RunPythonCode()
+	//middleware.Python3Demo()
+	w := sync.WaitGroup{}
+	w.Add(2)
+	go func() {
+		middleware.StartGrpcFileServer()
+		w.Done()
+	}()
+
+	//time.Sleep(2 * time.Second)
+	middleware.StartGrpcClient()
+	//w.Done()
+	w.Wait()
+	//time.Sleep(2 * time.Second)
+
 	return
 	//用于配合gops进行性能查看统计
 	//if err2 := agent.Listen(agent.Options{
@@ -90,7 +104,7 @@ func main() {
 	//basic_grammar.UnsafeDemo()
 	//algorithm.Visit()
 	basic_grammar.ChanDemo01()
-		//pprof性能监控
+	//pprof性能监控
 
 	//-----------
 	//xxx := live()
@@ -100,7 +114,6 @@ func main() {
 	//	fmt.Println("BBBBBBB")
 	//	xxx.Show()
 	//}
-
 
 	//运行报错： use of internal package github.com/go-redis/redis/internal/hashtag not allowed，这个是因为src文件夹底下有多个重名文件夹
 	//basic_grammar.GetSysInfo()
@@ -180,7 +193,7 @@ func main() {
 	//fmt.Println(strconv.FormatInt(int64(200),10))
 	//middleware.ServiceDiscover()
 	//uuid.New()
-	//middleware.PythonDemo2()
+	//middleware.RunPythonCode()
 
 	//middleware.OrmDemo3()
 	//a := 64

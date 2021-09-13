@@ -1,0 +1,18 @@
+syntax = "proto3";
+package proto;
+option go_package="./proto";
+
+
+service FileSaver {
+  rpc Save (stream SaveFileRequest) returns (SaveFileReply) {}
+}
+
+message SaveFileRequest {
+  string name = 1;
+  bytes data= 2;
+}
+
+message SaveFileReply {
+  int32 code = 1;
+  string message = 2;
+}
