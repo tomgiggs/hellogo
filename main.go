@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"hellogo/basic_grammar"
 	"hellogo/middleware"
+	"hellogo/third_party"
 	"io"
 	_ "net/http/pprof"
 	"sync"
@@ -71,6 +72,8 @@ func main() {
 	//third_party.StartGrpcJson()
 	//middleware.RunPythonCode()
 	//middleware.Python3Demo()
+	third_party.JsonschemaCheck()
+	return
 	w := sync.WaitGroup{}
 	w.Add(2)
 	go func() {

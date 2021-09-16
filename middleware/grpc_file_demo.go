@@ -3,12 +3,13 @@ package middleware
 import (
 	"fmt"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/health"
+	healthgrpc "google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/keepalive"
 	pb "hellogo/middleware/proto"
 	"io"
-	"os"
-
 	"net"
+	"os"
 	"time"
 )
 
@@ -59,6 +60,9 @@ func StartGrpcFileServer() {
 	//srv := grpc.NewServer(grpc.UnaryInterceptor(LogicIntInterceptor)) //这里可以注册拦截器，对请求进行授权认证等操作
 	lis, err := net.Listen("tcp", "127.0.0.1:21999")
 	pb.RegisterFileSaverServer(srv, &Fileserver{}) //这里传入的server对象即是在接收到请求是具体处理的函数，需要实现proto中定义的所有函数
+
+	healthgrpc.RegisterHealthServer(srv, health.NewServer()) //k8s - 健康检测
+
 	if err != nil {
 		fmt.Println("start grpc server error: ", err)
 		panic(err)

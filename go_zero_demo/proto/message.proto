@@ -1,0 +1,16 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+
+message PingMessage {
+    string uniq_id = 1;  // data unique id
+    google.protobuf.Timestamp seri_time = 2;  // serialize timestamp
+
+    enum Method {
+        ADD = 0;
+        DELETE = 1;
+        PATCH = 2;
+    }
+    Method method = 3;
+
+    string data = 4;
+}

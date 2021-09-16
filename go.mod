@@ -28,10 +28,12 @@ require (
 	github.com/johanbrandhorst/grpc-json-example v0.0.0-20180722152311-a20c72379c60
 	github.com/panjf2000/ants/v2 v2.4.6
 	github.com/pierrre/imageserver v0.0.0-20190609201707-8c89cbc7ecdb
-	github.com/sbinet/go-python v0.1.0
+	github.com/prometheus/client_golang v1.7.0
+	github.com/sbinet/go-python v0.1.0 // indirect
 	github.com/sirupsen/logrus v1.7.0
 	github.com/smartystreets/goconvey v1.6.4
 	github.com/toolkits/file v0.0.0-20160325033739-a5b3c5147e07 // indirect
+	github.com/xeipuuv/gojsonschema v1.2.0
 	github.com/yuin/gopher-lua v0.0.0-20200816102855-ee81675732da
 	golang.org/x/net v0.0.0-20210405180319-a5a99cb37ef4
 	google.golang.org/grpc v1.33.2

@@ -1,0 +1,44 @@
+type CommonResponse {
+	Code    int         `json:"code"`
+	Message string      `json:"message"`
+	Data    interface{} `json:"data"`
+}
+
+type TrainDataBatchRequest {
+	Appkey string                   `json:"appkey"`
+	AtId   string                   `json:"at_id"`
+	Data   []map[string]interface{} `json:"data"`
+}
+
+type DataUploadRecord {
+	Appkey string `json:"appkey"`
+}
+type DataUploadRecords {
+	Data   []DataUploadRecord `json:"data"`
+	Appkey string             `json:"appkey"`
+}
+
+type DataUploadRequest {
+	Appkey string `json:"appkey,optional"`
+	Start  string `json:"start"`
+	End    string `json:"end"`
+	Page   int    `json:"page",default=1`
+	Size   int    `json:"size,default=20"`
+}
+
+service pinggo-api {
+	@handler HealthCheck
+	get /health returns()
+	
+	@handler Metrics
+	get /metrics returns()
+	
+	@handler DataBatchUploadHandler
+	post /api/ping(TrainDataBatchRequest) returns (CommonResponse);
+	
+	@handler DatBatchDeleteHandler
+	delete /api/ping(TrainDataBatchRequest) returns (CommonResponse);
+	
+	@handler DataRecordHandler
+	get /api/data/record () returns (CommonResponse)
+}
