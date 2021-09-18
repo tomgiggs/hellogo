@@ -68,6 +68,11 @@ go build -ldflags="-H windowsgui"
 https://www.cnblogs.com/sbman/p/9366530.html 
 https://github.com/lxn/walk
 
+## thrift 教程
+生成代码：thrift -r --gen go .\manager.thrift
+https://thrift.apache.org/tutorial/go.html
+
+
 ---------
 
 标准项目目录结构：

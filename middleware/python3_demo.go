@@ -8,7 +8,7 @@ import (
 func ImportGlobalModule() {
 	sysModule := python3.PyImport_ImportModule("sys")                                                         // import sys
 	path := sysModule.GetAttrString("path")                                                                   // path = sys.path
-	python3.PyList_Insert(path, 0, python3.PyUnicode_FromString("D:\\program\\Python27\\Lib\\site-packages")) // path.insert(0, dir) 将路径添加到python 包搜索路径里面
+	python3.PyList_Insert(path, 0, python3.PyUnicode_FromString("D:\\program\\Python37\\Lib\\site-packages")) // path.insert(0, dir) 将路径添加到python 包搜索路径里面
 }
 
 func ImportModule(dir, name string) *python3.PyObject {
@@ -53,10 +53,10 @@ func Python3Demo() {
 	defer python3.Py_Finalize()
 	python3.Py_Initialize()
 	python3.PyRun_SimpleString("print('hello from python in go')")
-	ImportGlobalModule()// 导入全局依赖包
+	ImportGlobalModule() // 导入全局依赖包
 
-	res := ImportModule("./middleware", "demo")
-	helloFunc := res.GetAttrString("helloWorld")
+	res := ImportModule("./pycode", "test")
+	helloFunc := res.GetAttrString("main")
 	if helloFunc == nil {
 		return
 	}
