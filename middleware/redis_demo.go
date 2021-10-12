@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"encoding/json"
 	"fmt"
 	redigo "github.com/garyburd/redigo/redis"
 	goredis "github.com/go-redis/redis"
@@ -81,18 +80,18 @@ func RedisSubDemo(){
 func RedisPubDemo(){
 	client := goredis.NewClient(&goredis.Options{
 		Addr:     "localhost:6379",
-		Password: "root",
+		Password: "",
 		DB:       0,
 	})
 
-	data := &UserChangeInfo{
-		event: "online",
-		uid:   2,
-		srvId: "111",
-	}
-	jsonStr,_ := json.Marshal(data)
-
-	err := client.Publish("gim-user-login-server",string(jsonStr)).Err()
+	//data := &UserChangeInfo{
+	//	event: "online",
+	//	uid:   2,
+	//	srvId: "111",
+	//}
+	//jsonStr,_ := json.Marshal(data)
+	//fmt.Println(jsonStr)
+	err := client.Publish("__autotables_token_channel__","yyy").Err()
 	if err != nil {
 		fmt.Println("发布失败",err)
 	}

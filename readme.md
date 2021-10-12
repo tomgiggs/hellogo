@@ -47,6 +47,13 @@ Go语言实现一个接口并不需要显示声明，而是只要你实现了接
 使用go funName()创建一个新的协程可以参考创建一个新的线程，创建完就继续执行后面的语句了并不会导致阻塞。
 
 #go grpc使用
+### 工具安装
+choco install protoc
+go get -u google.golang.org/protobuf/cmd/protoc-gen-go
+go install google.golang.org/protobuf/cmd/protoc-gen-go
+go get -u google.golang.org/grpc/cmd/protoc-gen-go-grpc
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc
+
 编译生成.pb.go文件命令：
 protoc --proto_path=./proto --plugin=protoc-gen-go.exe --go_out=proto/ --go_opt=paths=source_relative proto/hellogrpc.proto
 生成grpc服务代码：

@@ -6,7 +6,6 @@ import (
 	"hellogo/middleware"
 	"io"
 	_ "net/http/pprof"
-	"sync"
 )
 
 //str := ""//包内必须以var const import func type  const, func,开头,短变量用来声明和初始化函数内部的局部变量
@@ -64,26 +63,28 @@ func main() {
 			fmt.Println("panic info: ", err)
 		}
 	}()
-
+	xx := fmt.Sprintf("-%02d", 2)
+	fmt.Println(xx)
 	//var pp *NilTes
 	//fmt.Println(pp)
 	//NilError()
 	//third_party.StartGrpcJson()
 	//middleware.RunPythonCode()
-	middleware.Python3Demo()
-	//third_party.JsonschemaCheck()
+	//middleware.Python3Demo()
+	//third_party.KnConfig()
+	//return
+	//w := sync.WaitGroup{}
+	//w.Add(2)
+	//go func() {
+	//	middleware.StartGrpcFileServer()
+	//	w.Done()
+	//}()
 	return
-	w := sync.WaitGroup{}
-	w.Add(2)
-	go func() {
-		middleware.StartGrpcFileServer()
-		w.Done()
-	}()
 
 	//time.Sleep(2 * time.Second)
-	middleware.StartGrpcClient()
+	middleware.RedisPubDemo()
 	//w.Done()
-	w.Wait()
+	//w.Wait()
 	//time.Sleep(2 * time.Second)
 
 	return
